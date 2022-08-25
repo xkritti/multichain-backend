@@ -9,6 +9,12 @@ export class AppService {
   getHello(): string {
     return 'Hello World!';
   }
+
+  async getSigner() {
+    let provider = ethers.getDefaultProvider();
+    return provider;
+  }
+
   createWallet() {
     const wallet = ethers.Wallet.createRandom();
     return {
@@ -21,7 +27,14 @@ export class AppService {
   }
 
   singup(req: singUpDto) {
-    return { data: { email: req.email, password: req.password } };
+    let walletdata = this.createWallet();
+    return {
+      data: {
+        email: req.email,
+        password: req.password,
+        walletdata: walletdata,
+      },
+    };
   }
 
   singin(req: singInDto) {
@@ -37,7 +50,7 @@ export class AppService {
   }
 
   async getWalletByMnemonic(phrase: string) {
-    let provider = ethers.getDefaultProvider();
+    let provider = await this.getSigner();
     let path = ethers.utils.defaultPath;
     let wallet = ethers.Wallet.fromMnemonic(phrase['phrase'], path);
     let singer = wallet.connect(provider);
@@ -49,17 +62,13 @@ export class AppService {
     return { data: { privateKey: wallet.privateKey, address, chainid } };
   }
 
-  async getSiner() {
-    let provider = ethers.getDefaultProvider();
-    return provider;
-  }
-  async getRpc(){
-    let privateKey = ''
-    const bsc_jsonRPC_testnet = "https://rpc-testnet.bitkubchain.io" // json RPC url
-    const provider = new ethers.providers.JsonRpcProvider(bsc_jsonRPC_testnet) // provider for signing transaction
-    let wallet = new ethers.Wallet(privateKey,provider);
+  async getRpc() {
+    let privateKey = '';
+    const bsc_jsonRPC_testnet = 'https://rpc-testnet.bitkubchain.io'; // json RPC url
+    const provider = new ethers.providers.JsonRpcProvider(bsc_jsonRPC_testnet); // provider for signing transaction
+    let wallet = new ethers.Wallet(privateKey, provider);
     let address = await wallet.getAddress();
     let chainid = await wallet.getChainId();
-    return {chainid,address}
+    return { chainid, address };
   }
 }

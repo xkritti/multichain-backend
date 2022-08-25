@@ -12,11 +12,6 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('createWallet')
-  createWallet() {
-    return this.appService.createWallet();
-  }
-
   @Post('singUp')
   singUp(@Body() req: singUpDto) {
     return this.appService.singup(req);

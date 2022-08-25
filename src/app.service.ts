@@ -38,7 +38,7 @@ export class AppService {
   }
 
   singin(req: singInDto) {
-    return { data: { email: req.email, password: req.password } };
+    return { status:true,data: { email: req.email, password: req.password } };
   }
 
   async getWalletInfo(privateKey: string) {

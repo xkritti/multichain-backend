@@ -12,10 +12,11 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Post('singUp')
+  @Post('singup')
   singUp(@Body() req: singUpDto) {
     return this.appService.singup(req);
   }
+
   @Post('singIn')
   singIn(@Body() req: singInDto) {
     return this.appService.singin(req);
@@ -25,12 +26,15 @@ export class AppController {
   getWalletInfo( @Body () privateKey:string){
     return this.appService.getWalletInfo(privateKey)
   }
+
   @Post("getWalletByMnemonic")
   getWalletByMnemonic( @Body () phrase:string){
     return this.appService.getWalletByMnemonic(phrase)
   }
+
   @Get("testrpc")
   getrpc(){
     return this.appService.getRpc()
   }
+  
 }

@@ -17,24 +17,23 @@ export class AppController {
     return this.appService.singup(req);
   }
 
-  @Post('singIn')
+  @Post('singin')
   singIn(@Body() req: singInDto) {
     return this.appService.singin(req);
   }
 
-  @Post("getWalletInfo")
-  getWalletInfo( @Body () privateKey:string){
-    return this.appService.getWalletInfo(privateKey)
+  @Post('getwalletinfo')
+  getWalletInfo(@Body() privateKey: string) {
+    return this.appService.getWalletInfo(privateKey);
   }
 
-  @Post("getWalletByMnemonic")
-  getWalletByMnemonic( @Body () phrase:string){
-    return this.appService.getWalletByMnemonic(phrase)
+  @Post('getwalletbymnemonic')
+  getWalletByMnemonic(@Body() phrase: string) {
+    return this.appService.getWalletByMnemonic(phrase);
   }
 
-  @Get("testrpc")
-  getrpc(){
-    return this.appService.getRpc()
+  @Post('multichain')
+  getChainByRpc(@Body() req: any) {
+    return this.appService.getChainByRpc(req);
   }
-  
 }

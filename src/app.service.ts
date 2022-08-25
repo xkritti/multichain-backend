@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ethers, utils } from 'ethers';
 import { HDNode } from 'ethers/lib/utils';
+import { bkcTestnet, bscTestnet, fcTestnet, rinkeby } from './chains';
 import { singInDto } from './dto/singin';
 import { singUpDto } from './dto/singup';
 
@@ -38,7 +39,7 @@ export class AppService {
   }
 
   singin(req: singInDto) {
-    return { status:true,data: { email: req.email, password: req.password } };
+    return { status: true, data: { email: req.email, password: req.password } };
   }
 
   async getWalletInfo(privateKey: string) {
@@ -62,13 +63,26 @@ export class AppService {
     return { data: { privateKey: wallet.privateKey, address, chainid } };
   }
 
-  async getRpc() {
-    let privateKey = '';
-    const bsc_jsonRPC_testnet = 'https://rpc-testnet.bitkubchain.io'; // json RPC url
-    const provider = new ethers.providers.JsonRpcProvider(bsc_jsonRPC_testnet); // provider for signing transaction
+  async getChainByRpc(req: any) {
+    let privateKey = req.privatekey;
+    let jsonRPC: any;
+    if (req.chainid == 29) {
+      jsonRPC = fcTestnet;
+    } else if (req.chainid == 97) {
+      jsonRPC = bkcTestnet;
+    } else if (req.chainid == 25925) {
+      jsonRPC = bscTestnet;
+    } else {
+      jsonRPC = rinkeby;
+    }
+    console.log(jsonRPC.rpcUrls.default);
+    const provider = new ethers.providers.JsonRpcProvider(
+      jsonRPC['rpcUrls']['default'],
+    ); // provider for signing transaction
     let wallet = new ethers.Wallet(privateKey, provider);
     let address = await wallet.getAddress();
     let chainid = await wallet.getChainId();
-    return { chainid, address };
+    let balance = ethers.utils.formatEther(await wallet.getBalance());
+    return { address, balance, jsonRPC };
   }
 }

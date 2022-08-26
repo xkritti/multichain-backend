@@ -39,7 +39,23 @@ export class AppService {
   }
 
   singin(req: singInDto) {
-    return { status: true, data: { email: req.email, password: req.password } };
+    let walletdata = {
+      data: {
+        address: '0x3AA80c96CbB6837626DA8d56263df087ad954c13',
+        mnemonicPhrase:
+          'peasant debris travel monkey amazing close dinner grit elevator fiber thank coral',
+        privateKey:
+          '0x9b1bf03dd7af46a81b776cc39a605adf46234d9a299ead5fc6fd4688c3b3dc63',
+      },
+    };
+    return {
+      status: true,
+      data: {
+        email: req.email,
+        password: req.password,
+        walletdata: walletdata,
+      },
+    };
   }
 
   async getWalletInfo(privateKey: string) {

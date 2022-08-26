@@ -101,4 +101,55 @@ export class AppService {
     let balance = ethers.utils.formatEther(await wallet.getBalance());
     return { address, balance, jsonRPC };
   }
+
+  async getTokenInfo(req: any) {
+    let privateKey = req.privatekey;
+    let jsonRPC: any;
+    if (req.chainid == 29) {
+      jsonRPC = fcTestnet;
+    } else if (req.chainid == 97) {
+      jsonRPC = bkcTestnet;
+    } else if (req.chainid == 25925) {
+      jsonRPC = bscTestnet;
+    } else {
+      jsonRPC = rinkeby;
+    }
+    console.log(jsonRPC.rpcUrls.default);
+    const provider = new ethers.providers.JsonRpcProvider(
+      jsonRPC.rpcUrls.default,
+    ); // provider for signing transaction
+    let wallet = new ethers.Wallet(privateKey, provider);
+
+    const abi = [
+      // Read-Only Functions
+      'function balanceOf(address owner) view returns (uint256)',
+      'function decimals() view returns (uint8)',
+      'function symbol() view returns (string)',
+
+      // Authenticated Functions
+      'function transfer(address to, uint amount) returns (bool)',
+
+      // Events
+      'event Transfer(address indexed from, address indexed to, uint amount)',
+    ];
+
+    // This can be an address or an ENS name
+    const address = req.token_address;
+
+    // Read-Only; By connecting to a Provider, allows:
+    // - Any constant function
+    // - Querying Filters
+    // - Populating Unsigned Transactions for non-constant methods
+    // - Estimating Gas for non-constant (as an anonymous sender)
+    // - Static Calling non-constant methods (as anonymous sender)
+    const erc20 = new ethers.Contract(address, abi, provider);
+    let balance = await erc20.balanceOf(address);
+
+    // Read-Write; By connecting to a Signer, allows:
+    // - Everything from Read-Only (except as Signer, not anonymous)
+    // - Sending transactions for non-constant functions
+    const erc20_rw = new ethers.Contract(address, abi, wallet);
+
+    return { address, balance, jsonRPC };
+  }
 }

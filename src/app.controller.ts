@@ -12,6 +12,11 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Post('gettokeninfo')
+  getTokenInfo(@Body() req: any) {
+    return this.appService.getTokenInfo(req)
+  }
+
   @Post('singup')
   singUp(@Body() req: singUpDto) {
     return this.appService.singup(req);

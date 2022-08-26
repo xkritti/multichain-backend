@@ -93,7 +93,7 @@ export class AppService {
     }
     console.log(jsonRPC.rpcUrls.default);
     const provider = new ethers.providers.JsonRpcProvider(
-      jsonRPC['rpcUrls']['default'],
+      jsonRPC.rpcUrls.default,
     ); // provider for signing transaction
     let wallet = new ethers.Wallet(privateKey, provider);
     let address = await wallet.getAddress();

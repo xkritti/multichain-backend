@@ -63,7 +63,7 @@ export const rinkeby: any = {
   name: "Rinkeby",
   nativeCurrency: { name: "Rinkeby Ether", symbol: "rETH", decimals: 18 },
   rpcUrls: {
-    default: "https://mainnet.infura.io/v3/UuZaRWkN8i9K1_RvrtssdRaRn6MTZ49_",
+    default: "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
   },
   blockExplorers: {
     etherscan: { name: "Etherscan", url: "https://rinkeby.etherscan.io" },
